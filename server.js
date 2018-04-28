@@ -52,23 +52,27 @@ app.get("/add", function(req, res) {
 });
 
 // Displays all characters
-app.get("/api/characters", function(req, res) {
-  return res.json(characters);
-});
+// app.get("/api/characters", function(req, res) {
+//   return res.json(characters);
+// });
 
-// Displays a single character, or returns false
-app.get("/api/characters/:character", function(req, res) {
+// If character displays the character (or statement saying not found) else displays all characters
+//character is optional
+app.get("/api/characters/:character?", function (req, res) {
+
   var chosen = req.params.character;
+  if (chosen) {
 
-  console.log(chosen);
-
-  for (var i = 0; i < characters.length; i++) {
-    if (chosen === characters[i].routeName) {
-      return res.json(characters[i]);
+    for (var i = 0; i < characters.length; i++) {
+      if (chosen === characters[i].routeName) {
+        return res.json(characters[i]);
+      }
     }
+    return res.send("No character found");
   }
-
-  return res.json(false);
+  else {
+    return res.json(characters);
+  }
 });
 
 // Create New Characters - takes in JSON input
